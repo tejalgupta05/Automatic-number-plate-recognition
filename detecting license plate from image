@@ -1,0 +1,104 @@
+import numpy as np
+import cv2
+from PIL import Image
+import pytesseract
+pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files (x86)\Tesseract-OCR\tesseract"
+
+def ratioCheck(area, width, height):
+    ratio = float(width) / float(height)
+    if ratio < 1:
+        ratio = 1 / ratio
+    if (area < 1063.62 or area > 73862.5) or (ratio < 3 or ratio > 6):
+        return False
+    return True
+
+image = cv2.imread(r'C:\Users\Saurav\Downloads\car image 1.jpg')
+img = cv2.resize(image, None, fx=1, fy=1, interpolation=cv2.INTER_CUBIC)
+cv2.imshow("orignal img", img)
+cv2.waitKey(0)
+
+# gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+# cv2.imshow("grey img", gray_image)
+# cv2.waitKey()
+# blurred = cv2.GaussianBlur(gray_image, (3, 3), 0)
+# cv2.imshow("blur img", blurred)
+# cv2.waitKey()
+# cv2.threshold(cv2.GaussianBlur(gray_image, (5, 5), 0), 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU) 
+# cv2.imshow("smoothened image", gray_image)
+# cv2.waitKey()
+# edged = cv2.Canny(blurred, 30, 200)
+# cv2.imshow("edged image", edged)
+# cv2.waitKey(0)
+# # apply binary thresholding
+# ret, thresh = cv2.threshold(edged, 150, 255, cv2.THRESH_BINARY)
+# # visualize the binary image
+# cv2.imshow('Binary image', thresh)
+# cv2.waitKey(0)
+# cv2.imwrite('image_thres1.jpg', thresh)
+# cv2.destroyAllWindows()
+
+#     contours, hierarchy = cv2.findContours(image=thresh, mode=cv2.RETR_TREE, method=cv2.CHAIN_APPROX_NONE)
+#     # draw contours on the original image
+#     image_copy = image.copy()
+#     cv2.drawContours(image=image_copy, contours=contours, contourIdx=-1, color=(0, 255, 0), thickness=2, lineType=cv2.LINE_AA)
+#     # see the result
+#     cv2.imshow('None approximation', image_copy)
+#     cv2.waitKey(0)
+#     cv2.imwrite('contours_none_image1.jpg', image_copy)
+#     cv2.destroyAllWindows()
+
+# cnts,new = cv2.findContours(edged.copy(), cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
+# image1=image.copy()
+# cv2.drawContours(image1,cnts,-1,(0,255,0),3)
+# cv2.imshow("contours",image1)
+# cv2.waitKey(0)
+
+# contours = sorted(contours, key = cv2.contourArea, reverse = True) [:30]
+# screenCnt = None
+# image2 = image.copy()
+# cv2.drawContours(image2,contours,-1,(0,255,0),3)
+# cv2.imshow("Top 30 contours",image2)
+# cv2.waitKey(0)
+
+# i=7
+# for c in contours:
+#         perimeter = cv2.arcLength(c, True)
+#         approx = cv2.approxPolyDP(c, 0.018 * perimeter, True)
+#         if len(approx) == 4: 
+#                 screenCnt = approx
+#                 x,y,w,h = cv2.boundingRect(c) 
+#                 new_img=image[y:y+h, x:x+w]
+#                 cv2.imwrite('file'+'.png', new_img)
+#                 i+=1
+#                 break
+#         print(len(approx))
+# cv2.drawContours(image, [screenCnt], -1, (0, 255, 0), 3)
+# cv2.imshow("image with detected license plate", image)
+# cv2.waitKey(0)
+
+# if num_contours:
+#         contour_area = [cv2.contourArea(c) for c in num_contours]
+#         max_cntr_index = np.argmax(contour_area)
+
+#         max_cnt = num_contours[max_cntr_index]
+#         max_cntArea = contour_area[max_cntr_index]
+#         x,y,w,h = cv2.boundingRect(max_cnt)
+
+#         if not ratioCheck(max_cntArea,w,h):
+#             return plate,None
+
+#         final_img = thresh[y:y+h, x:x+w]
+#         return final_img,[x,y,w,h]
+
+# else:
+#     return plate,None
+
+# Cropped_loc = 'file.png'
+# cv2.imshow("cropped", cv2.imread(Cropped_loc))
+# # plate = pytesseract.image_to_string(Cropped_loc)
+# # print("Number plate is:", plate)
+# cv2.waitKey(0) 
+# cv2.destroyAllWindows()
+
+# plate = pytesseract.image_to_string(Cropped_loc, lang='eng')
+# print("Number plate is:", plate)
